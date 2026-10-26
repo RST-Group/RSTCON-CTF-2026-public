@@ -1,0 +1,7 @@
+config_version=5
+
+[application]
+
+config/name="map_viewer"
+run/main_scene="res://ViewerRoot.tscn"
+config/features=PackedStringArray("4.5", "Forward Plus")

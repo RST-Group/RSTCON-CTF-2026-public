@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+"""
+Carry The Tide solver. Inverts the chained running sum on the embedded target to
+recover the key, which is the flag. The constants are static, so no need to run
+the binary.
+
+Pull the target bytes from the binary (objdump -s -j .rodata carry) or read them
+in a disassembler. They are reproduced here.
+"""
+SEED = 0x5A
+target = [
+    0xcc, 0xe5, 0xe7, 0xd7, 0xd2, 0xdd, 0xe9, 0xed,
+    0xe7, 0xe3, 0xdc, 0xd7, 0xd7, 0xd5, 0xc6, 0xd2,
+    0xe8, 0xe2, 0xcc, 0xd4, 0xe3, 0xe5, 0xe0, 0xd7,
+    0xd2, 0xd7, 0xd2, 0xc8, 0xd7, 0xcd, 0xd1, 0xd7,
+    0xdb, 0xdb, 0xd7, 0xe5, 0xd8, 0xe2,
+]
+
+prev = SEED
+out = []
+for t in target:
+    b = (t - prev) & 0xFF   # key[i] = target[i] - key[i-1]  (prev starts at SEED)
+    out.append(b)
+    prev = b
+
+print("".join(chr(c) for c in out))
